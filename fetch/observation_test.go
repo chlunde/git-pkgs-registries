@@ -24,6 +24,7 @@ func TestFetchObserved(t *testing.T) {
 			w.Header().Set("Content-Type", "application/gzip")
 			w.Header().Set("ETag", `"abc123"`)
 			w.Header().Set("Set-Cookie", "session=secret")
+			w.Header().Set("X-Checksum-Sha1", "161ba27964a62f241533807a46b8711b13c1d94b")
 			w.Header().Set("X-Response-Secret", r.Header.Get("Authorization"))
 			_, _ = w.Write(content)
 		default:
@@ -70,6 +71,9 @@ func TestFetchObserved(t *testing.T) {
 	}
 	if observation.Headers.Get("ETag") != `"abc123"` {
 		t.Errorf("ETag = %q, want %q", observation.Headers.Get("ETag"), `"abc123"`)
+	}
+	if got := observation.Headers.Get("X-Checksum-Sha1"); got != "161ba27964a62f241533807a46b8711b13c1d94b" {
+		t.Errorf("X-Checksum-Sha1 = %q", got)
 	}
 	for _, name := range []string{"Authorization", "X-Custom", "Set-Cookie", "X-Response-Secret"} {
 		if observation.Headers.Get(name) != "" {

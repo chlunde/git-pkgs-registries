@@ -25,6 +25,8 @@ var observedResponseHeaders = []string{
 	"ETag",
 	"Expires",
 	"Last-Modified",
+	"X-Checksum-Md5",
+	"X-Checksum-Sha1",
 }
 
 // FetchObservation contains metadata about a successful artifact response.
